@@ -1,0 +1,46 @@
+{
+  "id": "com.ruodao.douyin-live-workbench",
+  "name": "抖音直播互动工作台",
+  "version": "1.3.0",
+  "apiVersion": ">=0.1.0 <0.2.0",
+  "description": "面向抖音直播伴侣的弹幕互动玩法工作台：内置「人类 VS 丧尸」「最美家乡投票」「三国壮志」「奔跑羊」4 套实时互动玩法；覆盖层升级为 three.js 实时 3D 舞台（生成式 9:16 主视觉、主将立绘、粒子与基地光效、电影机位），并新增场控台：一键上屏字幕、语音播报、话术库、关键词自动应答、场控时间轴、背景音乐搜索播放（覆盖层/本机双路由）与 meshy GLB 主将导入。Node 权威 20Hz 模拟，1080×1920 透明竖屏可直接填入直播伴侣浏览器源。",
+  "requires": {
+    "capabilities": {
+      "required": {
+        "commands": "0.1.0",
+        "code.execute": "0.1.0"
+      }
+    }
+  },
+  "permissions": [
+    "process",
+    "network",
+    "clipboard"
+  ],
+  "contributes": {
+    "services": [
+      {
+        "id": "main",
+        "title": "抖音直播互动常驻服务（互动引擎 · 覆盖层 · 本地场次）",
+        "description": "插件自己的 Node 进程承载 4 套弹幕互动玩法（人类VS丧尸 / 最美家乡 / 三国壮志 / 奔跑羊）的权威模拟引擎（20Hz tick）、礼物/评论事件归一化、演示与中继互动源、本机 HTTP + SSE 覆盖层服务、贡献榜与场次归档。直播数据只写宿主 userData，覆盖层通过 127.0.0.1 提供给直播伴侣浏览器源。",
+        "action": {
+          "type": "process",
+          "command": "node",
+          "args": [
+            "bin/live-service.mjs"
+          ],
+          "cwd": "."
+        }
+      }
+    ]
+  },
+  "capabilities": [
+    "3d-overlay",
+    "generated-stage-assets",
+    "bgm-player",
+    "live-control",
+    "subtitle-overlay",
+    "ai-script",
+    "glb-model-import"
+  ]
+}

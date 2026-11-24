@@ -1,0 +1,103 @@
+{
+  "generatedAt": 1794371243617,
+  "model": "gpt-image-2.6",
+  "items": {
+    "human-vs-zombie": {
+      "kind": "background",
+      "url": "/assets/media/backgrounds/human-vs-zombie.jpg",
+      "file": "backgrounds/human-vs-zombie.jpg",
+      "prompt": "斜俯视赛博废土战场：下方人类蓝色平台、上方丧尸红色废墟、中央宽阔战场通道、火光与浓烟，无人物无文字。",
+      "background": "/assets/media/backgrounds/human-vs-zombie.jpg",
+      "zombie": "/assets/media/units/zombie-hero.png",
+      "human": "/assets/media/units/human-hero.png",
+      "humanBoss": "/assets/media/units/human-boss.png",
+      "zombieBoss": "/assets/media/units/zombie-boss.png"
+    },
+    "zombie-hero": {
+      "kind": "unit",
+      "url": "/assets/media/units/zombie-hero.png",
+      "file": "units/zombie-hero.png",
+      "prompt": "竖屏 2:3 科幻游戏角色立绘，废土生化战士，全身正面站姿，深灰与暗红配色的重型战术装甲，胸口有红色能量核心，肩甲与护臂结构清晰，双手呈战斗准备姿态，黑色纯背景，边缘红色轮廓光，电影级材质，硬表面细节，干净整洁，无血迹，无伤口，无文字，游戏主视觉，高对比度"
+    },
+    "sheep-hero": {
+      "kind": "unit",
+      "url": "/assets/media/units/sheep-hero.png",
+      "file": "units/sheep-hero.png",
+      "prompt": "竖屏 2:3 游戏角色立绘，赛博机械羊，全身正面站姿，白色羊毛与青色机械外骨骼结合，发光护目镜，脚踏推进器，黑色纯背景，边缘青色轮廓光，可爱但硬核，无文字，游戏主视觉，高对比度"
+    },
+    "running-sheep": {
+      "unit": "/assets/media/units/sheep-hero.png",
+      "kind": "background",
+      "url": "/assets/media/backgrounds/running-sheep.jpg",
+      "file": "backgrounds/running-sheep.jpg",
+      "prompt": "竖版 9:16 赛博朋克竞速舞台：左右两条霓虹赛道向远处终点拱门延伸、青蓝与品红能量边线、赛博羊村建筑与速度光带、湿地面反光，无角色无文字。",
+      "background": "/assets/media/backgrounds/running-sheep.jpg",
+      "left": "/assets/media/units/sheep-blue.jpg",
+      "right": "/assets/media/units/sheep-pink.jpg",
+      "sheep": "/assets/media/units/sheep-white.png",
+      "sheepPrompt": "白色蓬松卡通羊，青色发光围巾，3/4 侧身，纯黑底。"
+    },
+    "stage-ui": {
+      "kind": "ui",
+      "url": "/assets/media/ui/stage-panel.png",
+      "file": "ui/stage-panel.png",
+      "prompt": "深色科技感直播 UI 面板贴图，半透明黑蓝玻璃材质，细霓虹描边，四角有切角装饰，中央留空，无文字，正面平铺，游戏 HUD 面板素材，高分辨率"
+    },
+    "human-hero": {
+      "kind": "unit",
+      "url": "/assets/media/units/human-hero.png",
+      "file": "units/human-hero.png",
+      "prompt": "竖屏 2:3 游戏角色立绘，未来蓝色装甲人类指挥官，全身正面站姿，外骨骼装甲带发光蓝色能量线条，手持电磁步枪，黑色纯背景，边缘蓝色轮廓光，电影级材质，硬表面细节，无文字，游戏主视觉，高对比度"
+    },
+    "three-kingdoms": {
+      "kind": "background",
+      "url": "/assets/media/backgrounds/three-kingdoms.jpg",
+      "file": "backgrounds/three-kingdoms.jpg",
+      "prompt": "竖版 9:16 三国古战场主视觉：三条纵向军阵通道、燃烧城门与烽火台、红金蜀汉与蓝黑曹魏旗阵、烟尘火星与月光体积光，无人物无文字。",
+      "background": "/assets/media/backgrounds/three-kingdoms.jpg",
+      "shu": "/assets/media/units/three-kingdoms-shu.jpg",
+      "wu": "/assets/media/units/three-kingdoms-wu.jpg",
+      "wei": "/assets/media/units/three-kingdoms-wei.jpg"
+    },
+    "hometown-vote": {
+      "kind": "background",
+      "url": "/assets/media/backgrounds/hometown-vote.jpg",
+      "file": "backgrounds/hometown-vote.jpg",
+      "prompt": "竖版 9:16 未来科技大厅：悬浮全息中国地图、青蓝网格与金色省份光点、能量光环与粒子光柱，底部压暗留榜单区，无人物无文字。",
+      "background": "/assets/media/backgrounds/hometown-vote.jpg",
+      "guardian": "/assets/media/units/hometown-guardian.png",
+      "guardianPrompt": "金色火焰巨虎守护兽，正面低吼，纯黑底。"
+    },
+    "three-kingdoms-shu": {
+      "kind": "unit",
+      "url": "/assets/media/units/three-kingdoms-shu.jpg",
+      "file": "units/three-kingdoms-shu.jpg",
+      "prompt": "三国蜀汉武圣立绘：红金重甲、青龙偃月刀、龙纹肩甲、纯黑背景、红金轮廓光。"
+    },
+    "three-kingdoms-wu": {
+      "kind": "unit",
+      "url": "/assets/media/units/three-kingdoms-wu.jpg",
+      "file": "units/three-kingdoms-wu.jpg",
+      "prompt": "三国东吴火凤军师立绘：橙金青绿轻甲、火焰长弓、凤凰羽翼肩饰、纯黑背景、橙金与青色轮廓光。"
+    },
+    "three-kingdoms-wei": {
+      "kind": "unit",
+      "url": "/assets/media/units/three-kingdoms-wei.jpg",
+      "file": "units/three-kingdoms-wei.jpg",
+      "prompt": "三国曹魏枭雄立绘：黑蓝重甲、玄色披风、兽面浮雕、长剑、纯黑背景、冰蓝轮廓光。"
+    },
+    "sheep-blue": {
+      "kind": "unit",
+      "url": "/assets/media/units/sheep-blue.jpg",
+      "file": "units/sheep-blue.jpg",
+      "prompt": "赛博机械羊·青霜：白色羊毛配青蓝外骨骼与推进器、侧面奔跑、纯黑背景、青色轮廓光。"
+    },
+    "sheep-pink": {
+      "kind": "unit",
+      "url": "/assets/media/units/sheep-pink.jpg",
+      "file": "units/sheep-pink.jpg",
+      "prompt": "赛博机械羊·赤焰：粉紫羊毛配玫红外骨骼与火焰角、侧面奔跑、纯黑背景、品红轮廓光。"
+    }
+  },
+  "version": 2
+}

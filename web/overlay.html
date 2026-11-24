@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>抖音弹幕互动玩法 · 直播舞台</title>
+<link rel="icon" href="data:">
+<link rel="stylesheet" href="/assets/overlay.css">
+</head>
+<body>
+<div id="stage" class="stage" data-theme="human-vs-zombie" data-status="idle">
+  <div class="stage-vignette"></div>
+  <main id="scene" class="scene" aria-label="弹幕互动玩法舞台"></main>
+  <div id="hud" class="hud hidden" aria-hidden="true"></div>
+  <header class="ov-header">
+    <span class="live-pill" id="live-pill"><i></i><span id="live-text">待开播</span></span>
+    <h1 id="ov-title">人类 VS 丧尸</h1>
+  </header>
+  <div id="subtitle" class="ov-subtitle" aria-live="polite"><span id="subtitle-text"></span></div>
+  <audio id="bgm" preload="auto"></audio>
+  <section id="idle" class="idle">
+    <div class="idle-card">
+      <span class="idle-kicker">抖音弹幕互动玩法</span>
+      <h2 id="idle-name">人类 VS 丧尸</h2>
+      <p id="idle-tagline">扣 1 加入人类，扣 2 加入丧尸，用礼物把己方推上无敌邪神</p>
+      <ol id="idle-howto"></ol>
+      <div class="idle-gifts" id="idle-gifts"></div>
+      <span class="idle-wait">等待主播开启互动玩法</span>
+    </div>
+  </section>
+  <div id="fx" class="fx"></div>
+  <div id="toasts" class="toasts"></div>
+  <div id="conn" class="conn"></div>
+</div>
+<script type="module" src="/assets/overlay.mjs"></script>
+</body>
+</html>

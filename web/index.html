@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>抖音直播工作台</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="assets/workbench.css" />
+</head>
+<body>
+  <div id="app" class="wb" data-tab="console" data-boot="loading">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" id="brand-icon" aria-hidden="true"></span>
+        <div class="brand-text">
+          <h1>抖音直播工作台</h1>
+          <p><span class="mono" id="version-label">v1.0.0</span><span class="sep">·</span><span id="mode-label">正在连接本地互动服务</span></p>
+        </div>
+      </div>
+      <div class="top-status">
+        <span class="pill" id="conn-pill"><i class="dot"></i><span>连接中</span></span>
+        <span class="pill neutral" id="health-pill">未开播</span>
+        <span class="pill mono" id="clock-pill">00:00</span>
+      </div>
+      <div class="top-actions">
+        <button type="button" class="btn ghost small" id="copy-overlay-top">复制覆盖层</button>
+        <button type="button" class="btn ghost small" id="open-overlay-top">新窗口预览</button>
+        <button type="button" class="btn primary" id="start-top">一键开播</button>
+        <button type="button" class="btn danger" id="stop-top" hidden>结束直播</button>
+      </div>
+    </header>
+
+    <nav class="tabs" id="tabs" aria-label="工作台分区">
+      <button type="button" class="tab active" data-tab="console" data-icon="play">控制台</button>
+      <button type="button" class="tab" data-tab="control" data-icon="monitor">场控</button>
+        <button type="button" class="tab" data-tab="data" data-icon="chart">数据</button>
+      <button type="button" class="tab" data-tab="monitor" data-icon="monitor">监控</button>
+      <button type="button" class="tab" data-tab="review" data-icon="history">复盘</button>
+      <button type="button" class="tab" data-tab="settings" data-icon="settings">设置</button>
+      <span class="tab-spacer"></span>
+      <span class="tab-hint" id="tab-hint">选择玩法 · 检查互动源 · 一键开播</span>
+    </nav>
+
+    <section class="live-hero" aria-label="直播主舞台">
+      <div class="hero-copy">
+        <span class="eyebrow"><i></i>LIVE CONTROL ROOM / 01</span>
+        <h2>扣 1 加入人类，<em>扣 2 加入丧尸</em></h2>
+        <p>双阵营实时对战：弹幕选边、礼物升级兵种，从冲锋兵一路进化到无敌邪神，先破对方基地者获胜。</p>
+        <div class="hero-actions">
+          <button type="button" class="btn primary large" id="hero-start">开始直播</button>
+          
+        </div>
+        <div class="hero-metrics"><span><b id="hero-energy">扣1</b><small>加入人类</small></span><span><b id="hero-viewers">扣2</b><small>加入丧尸</small></span><span><b>礼物</b><small>升级兵种</small></span></div>
+      </div>
+      <div class="hero-stage hero-reactor-stage" id="hero-stage">
+        <div class="stage-grid"></div><div class="stage-orbit orbit-a"></div><div class="stage-orbit orbit-b"></div>
+        <div class="stage-reactor"><span class="stage-reactor-ring ring-one"></span><span class="stage-reactor-ring ring-two"></span><strong id="stage-beat">LIVE</strong><small>INTERACTION CORE</small></div>
+        <div class="stage-label label-top">HUMAN VS ZOMBIE <b>● READY</b></div><div class="stage-label label-bottom">事件响应 <b id="stage-score">待开播</b></div>
+        <div class="particle-field" id="particle-field"></div>
+      </div>
+    </section>
+
+    <main class="main">
+      <section class="pane" data-pane="console">
+        <div class="console-grid">
+          <div class="console-main">
+            <section class="panel">
+              <header class="panel-head">
+                <div>
+                  <h2>人类 VS 丧尸 · 主舞台</h2>
+                  <p>双阵营兵线对战：弹幕选边、礼物升级兵种、破塔奖池与贡献榜实时结算</p>
+                </div>
+                <span class="tag" id="games-tag">抖音弹幕互动</span>
+              </header>
+              <div class="game-grid" id="game-grid"></div>
+            </section>
+
+            <section class="panel">
+              <header class="panel-head">
+                <div>
+                  <h2>舞台控制</h2>
+                  <p id="options-desc">控制回合时长、单位上限、助威推力、破塔奖池与镜头榜单</p>
+                </div>
+                <button type="button" class="btn ghost small" id="options-reset">恢复默认</button>
+              </header>
+              <div class="options-grid" id="options-grid"></div>
+            </section>
+
+            <section class="panel" id="launch-panel">
+              <header class="panel-head">
+                <div>
+                  <h2>开播检查</h2>
+                  <p>一键开播会启动互动服务、覆盖层与互动源</p>
+                </div>
+                <span class="tag good" id="launch-tag">就绪</span>
+              </header>
+              <div class="checklist" id="checklist"></div>
+              <div class="launch-row">
+                <button type="button" class="btn primary large" id="launch-btn">一键开播</button>
+                <button type="button" class="btn secondary" id="next-round-btn">下一回合</button>
+                <button type="button" class="btn danger ghost" id="end-btn">结束直播</button>
+              </div>
+              <p class="fineprint">开播后仍需在抖音直播伴侣里点「开始直播」；本工作台负责互动玩法、覆盖层与事件接入，不会操作抖音官方开播按钮。</p>
+            </section>
+
+            <section class="panel">
+              <header class="panel-head">
+                <div>
+                  <h2>礼物模拟器</h2>
+                  <p>不接真实弹幕也能彩排，礼物热度会真实计入当前玩法</p>
+                </div>
+                <span class="tag mono" id="gift-heat-preview">热度 +1</span>
+              </header>
+              <div class="gift-grid" id="gift-grid"></div>
+              <div class="gift-form">
+                <label class="field inline">
+                  <span>观众昵称</span>
+                  <input id="gift-user" type="text" maxlength="24" placeholder="留空则随机观众" autocomplete="off" />
+                </label>
+                <label class="field inline count">
+                  <span>数量</span>
+                  <input id="gift-count" type="number" min="1" max="999" step="1" value="1" />
+                </label>
+                <button type="button" class="btn primary" id="gift-send">送出礼物</button>
+                <button type="button" class="btn ghost" id="gift-random">随机观众</button>
+                
+                
+              </div>
+              <div class="gift-feedback" id="gift-feedback">还没有送出测试礼物</div>
+            </section>
+          </div>
+
+          <aside class="console-side">
+            <section class="panel preview-panel">
+              <header class="panel-head">
+                <div>
+                  <h2>直播预览 · 9:16</h2>
+                  <p>与直播伴侣里的覆盖层一致</p>
+                </div>
+                <button type="button" class="icon-btn" id="preview-refresh" title="刷新预览" aria-label="刷新预览">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>
+                </button>
+              </header>
+              <div class="phone-frame">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <iframe id="overlay-preview" title="直播覆盖层预览"></iframe>
+                  <div class="preview-empty" id="preview-empty">正在连接互动服务</div>
+                </div>
+              </div>
+              <div class="preview-actions">
+                <button type="button" class="btn secondary small" id="copy-overlay-side">复制覆盖层地址</button>
+                <button type="button" class="btn ghost small" id="open-overlay-side">浏览器打开</button>
+              </div>
+              <ol class="obs-steps">
+                <li>打开抖音直播伴侣，添加「浏览器 / 网页」来源</li>
+                <li>粘贴覆盖层地址，分辨率 1080 × 1920，背景透明</li>
+                <li>工作台点「一键开播」后，再在直播伴侣点「开始直播」</li>
+              </ol>
+            </section>
+
+            <section class="panel">
+              <header class="panel-head compact">
+                <div><h2>本场速览</h2><p id="side-session-label">待开播</p></div>
+              </header>
+              <div class="mini-stats" id="side-kpis"></div>
+            </section>
+
+            <section class="panel">
+              <header class="panel-head compact">
+                <div><h2>互动源</h2><p id="side-source-label">尚未连接</p></div>
+                <span class="tag" id="side-source-tag">演示</span>
+              </header>
+              <div class="source-quick" id="side-source"></div>
+            </section>
+          </aside>
+        </div>
+      </section>
+
+      <section class="pane" data-pane="control" hidden>
+        <div class="control-hero panel">
+          <div>
+            <span class="eyebrow"><i></i>LIVE FLOOR / 02</span>
+            <h2>场控台 · <em>节奏、话术、BGM</em> 一把抓</h2>
+            <p>字幕直接上屏；关键词自动应答；到点自动提醒；背景音乐从覆盖层或本机播放。</p>
+          </div>
+          <div class="control-live" id="control-live"></div>
+        </div>
+        <div class="control-grid">
+          <section class="panel control-push">
+            <header class="panel-head">
+              <div><h2>立即上屏</h2><p>6 秒后自动隐藏，可勾选语音播报</p></div>
+              <span class="tag" id="control-subtitle-tag">待上屏</span>
+            </header>
+            <textarea id="control-text" class="control-text" rows="3" placeholder="例如：最后 30 秒，落后一方一个小心心就能反打"></textarea>
+            <div class="control-row">
+              <select id="control-tone">
+                <option value="info">常规</option>
+                <option value="human">人类阵营</option>
+                <option value="zombie">丧尸阵营</option>
+                <option value="gift">礼物感谢</option>
+                <option value="boost">冲榜加速</option>
+                <option value="welcome">欢迎新人</option>
+                <option value="follow">关注感谢</option>
+                <option value="warning">警示</option>
+              </select>
+              <label class="switch"><input type="checkbox" id="control-tts-once" /><i></i><span>语音播报</span></label>
+              <button type="button" class="btn primary" id="control-push">上屏</button>
+            </div>
+          </section>
+          <section class="panel control-bgm">
+            <header class="panel-head">
+              <div><h2>背景音乐</h2><p id="bgm-status">未选择曲目</p></div>
+              <span class="tag" id="bgm-tag">停止</span>
+            </header>
+            <div class="bgm-now" id="bgm-now"></div>
+            <div class="control-row">
+              <input id="bgm-query" placeholder="搜索歌名 / 歌手，例如：开场 热血" />
+              <button type="button" class="btn secondary" id="bgm-search">搜索</button>
+            </div>
+            <div class="bgm-results" id="bgm-results"></div>
+            <div class="control-row">
+              <button type="button" class="btn ghost" id="bgm-toggle">播放 / 暂停</button>
+              <select id="bgm-route">
+                <option value="workbench">本机播放（推荐）</option>
+                <option value="overlay">覆盖层播放</option>
+                <option value="both">同时播放</option>
+              </select>
+              <input id="bgm-volume" type="range" min="0" max="100" />
+              <b id="bgm-volume-label">35%</b>
+            </div>
+            <p class="control-hint">本机播放（推荐）：直播伴侣采集「系统扬声器」，开播即响、不依赖浏览器手势；覆盖层播放：采集「网页声音」，浏览器可能拦截自动播放，需要先点一下覆盖层。两路不要同时开，避免回声。</p>
+          </section>
+          <section class="panel control-scripts">
+            <header class="panel-head">
+              <div><h2>话术库</h2><p>点击即上屏，F1–F6 快捷键</p></div>
+              <button type="button" class="btn ghost small" id="control-ai">AI 生成 5 条</button>
+            </header>
+            <div id="script-groups" class="script-groups"></div>
+          </section>
+          <section class="panel control-rules">
+            <header class="panel-head">
+              <div><h2>自动应答</h2><p>关键词命中后自动上屏，同一个人有冷却</p></div>
+              <span class="tag" id="rule-tag">0 条</span>
+            </header>
+            <div id="rule-list" class="rule-list"></div>
+          </section>
+          <section class="panel control-timeline">
+            <header class="panel-head">
+              <div><h2>场控时间轴</h2><p>按开播分钟提醒话术，点“执行”立即上屏</p></div>
+            </header>
+            <div id="timeline-list" class="timeline-list"></div>
+          </section>
+          <section class="panel control-safety">
+            <header class="panel-head">
+              <div><h2>安全与开关</h2><p>敏感词只拦截自动应答，不影响玩法计分</p></div>
+            </header>
+            <div class="control-switches">
+              <label class="switch"><input type="checkbox" id="control-auto" /><i></i><span>自动应答</span></label>
+              <label class="switch"><input type="checkbox" id="control-tts-global" /><i></i><span>全局语音播报</span></label>
+            </div>
+            <label class="field"><span>敏感词（逗号分隔）</span><textarea id="control-banned" rows="2"></textarea></label>
+            <div class="form-actions"><button type="button" class="btn primary" id="control-save">保存场控设置</button></div>
+          </section>
+          <section class="panel control-stage">
+            <header class="panel-head">
+              <div><h2>3D 舞台与主将</h2><p>覆盖层实时 3D；可导入 meshy.cn 下载的 GLB 主将模型</p></div>
+              <span class="tag" id="stage-tag">3D</span>
+            </header>
+            <div class="stage-form">
+              <label class="field"><span>舞台模式</span>
+                <select id="stage-mode">
+                  <option value="3d">3D 舞台</option>
+                  <option value="auto">自动（失败回退 2D）</option>
+                  <option value="2d">2D 舞台</option>
+                </select>
+              </label>
+              <label class="field"><span>画质</span>
+                <select id="stage-quality">
+                  <option value="high">高（推荐）</option>
+                  <option value="balanced">均衡</option>
+                  <option value="low">低配</option>
+                </select>
+              </label>
+              <label class="field"><span>机位</span>
+                <select id="stage-camera">
+                  <option value="cinematic">电影感晃动</option>
+                  <option value="fixed">固定机位</option>
+                </select>
+              </label>
+              <label class="field"><span>舞台背景</span><select id="stage-background"><option value="auto">自动匹配玩法</option></select></label>
+            </div>
+            <div class="stage-models" id="stage-models"></div>
+            <div class="control-row">
+              <label class="btn ghost file-btn">导入 GLB<input type="file" id="stage-import" accept=".glb,.gltf" hidden /></label>
+              <button type="button" class="btn primary" id="stage-save">保存舞台设置</button>
+              <a class="btn ghost" href="https://meshy.cn/" target="_blank" rel="noreferrer">去 meshy.cn 下载</a>
+            </div>
+            <p class="control-hint">meshy.cn → 3D 模型 → 生成或挑一个 → 下载 GLB（带骨骼动画更好）→ 导入后指派给人类/丧尸主将。模型只保存在本机插件目录。</p>
+          </section>
+        </div>
+      </section>
+
+      <section class="pane" data-pane="data" hidden>
+        <div class="stats-grid" id="data-kpis"></div>
+        <div class="data-grid">
+          <section class="panel">
+            <header class="panel-head">
+              <div><h2>礼物热度趋势</h2><p id="chart-caption">按分钟统计本场礼物热度</p></div>
+              <span class="tag mono" id="chart-total">0 热度</span>
+            </header>
+            <div class="chart" id="heat-chart"></div>
+          </section>
+          <section class="panel">
+            <header class="panel-head">
+              <div><h2>玩法实时数据</h2><p id="engine-caption">尚未开播</p></div>
+            </header>
+            <div class="engine-snapshot" id="engine-snapshot"></div>
+          </section>
+        </div>
+        <div class="data-grid">
+          <section class="panel">
+            <header class="panel-head">
+              <div><h2>贡献榜</h2><p>按本场礼物热度排序，刷新会同步到覆盖层</p></div>
+              <span class="tag" id="top-users-tag">0 人上榜</span>
+            </header>
+            <div class="table" id="top-users"></div>
+          </section>
+          <section class="panel">
+            <header class="panel-head">
+              <div><h2>回合记录</h2><p>本场结算明细，最多保留最近 8 回合</p></div>
+            </header>
+            <div class="round-list" id="round-list"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="pane" data-pane="monitor" hidden>
+        <div class="stats-grid" id="monitor-kpis"></div>
+        <div class="monitor-grid">
+          <section class="panel">
+            <header class="panel-head">
+              <div><h2>互动源</h2><p>演示源用于彩排；中继用于接入真实弹幕</p></div>
+              <span class="tag" id="source-mode-tag">演示</span>
+            </header>
+            <div id="source-detail"></div>
+          </section>
+          <section class="panel">
+            <header class="panel-head">
+              <div><h2>健康与告警</h2><p>连接、回合与记录异常都会出现在这里</p></div>
+            </header>
+            <div class="alert-list" id="alert-list"></div>
+          </section>
+        </div>
+        <section class="panel">
+          <header class="panel-head">
+            <div><h2>实时事件流</h2><p>最近 20 条互动事件，按时间倒序</p></div>
+            <span class="pill" id="stream-pill"><i class="dot"></i><span>SSE 连接中</span></span>
+          </header>
+          <div class="table event-table" id="event-stream"></div>
+        </section>
+      </section>
+
+      <section class="pane" data-pane="review" hidden>
+        <div class="review-grid">
+          <section class="panel">
+            <header class="panel-head">
+              <div><h2>本场复盘</h2><p id="review-caption">尚未开播</p></div>
+              <div class="head-actions">
+                <button type="button" class="btn ghost small" id="report-copy">复制摘要</button>
+                <button type="button" class="btn ghost small" id="report-export">导出 JSON</button>
+              </div>
+            </header>
+            <div id="report-card"></div>
+          </section>
+          <section class="panel">
+            <header class="panel-head">
+              <div><h2>历史场次</h2><p>数据保存在本机插件数据目录</p></div>
+              <button type="button" class="btn ghost small" id="sessions-refresh">刷新</button>
+            </header>
+            <div id="session-list" class="session-list"></div>
+            <div id="session-detail" class="session-detail" hidden></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="pane" data-pane="settings" hidden>
+        <div class="settings-grid">
+          <section class="panel">
+            <header class="panel-head"><div><h2>直播间信息</h2><p>显示在覆盖层顶部，影响所有玩法</p></div></header>
+            <div class="form-grid">
+              <label class="field"><span>直播间标题</span><input id="set-title" type="text" maxlength="30" /></label>
+              <label class="field"><span>副标题</span><input id="set-subtitle" type="text" maxlength="40" /></label>
+              <label class="field"><span>覆盖层主题</span>
+                <div class="theme-row" id="set-theme">
+                  <button type="button" class="theme-swatch" data-theme="neon"><i class="sw-neon"></i>霓虹夜场</button>
+                  <button type="button" class="theme-swatch" data-theme="candy"><i class="sw-candy"></i>糖果派对</button>
+                  <button type="button" class="theme-swatch" data-theme="gold"><i class="sw-gold"></i>鎏金舞台</button>
+                </div>
+              </label>
+              <div class="toggle-row">
+                <label class="switch"><input type="checkbox" id="set-sound" /><i></i><span>覆盖层音效</span></label>
+                <label class="switch"><input type="checkbox" id="set-hints" /><i></i><span>显示玩法提示</span></label>
+              </div>
+            </div>
+            <div class="form-actions"><button type="button" class="btn primary" id="set-info-save">保存直播间信息</button></div>
+          </section>
+
+          <section class="panel">
+            <header class="panel-head"><div><h2>真实弹幕中继</h2><p>把扩展或弹幕中继的推送地址填到这里；令牌只保存在本机</p></div><span class="tag" id="relay-state-tag">演示源</span></header>
+            <div class="form-grid">
+              <label class="field"><span>中继地址</span><input id="set-relay-url" type="text" placeholder="http://127.0.0.1:17321/events" autocomplete="off" /></label>
+              <label class="field"><span>访问令牌</span><input id="set-relay-token" type="password" placeholder="留空表示不修改已保存令牌" autocomplete="off" /></label>
+              <label class="switch"><input type="checkbox" id="set-relay-auto" /><i></i><span>断线自动重连</span></label>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn primary" id="relay-save">保存并连接</button>
+              <button type="button" class="btn ghost" id="relay-demo">切回演示源</button>
+              <button type="button" class="btn ghost" id="relay-clear-token">清除令牌</button>
+            </div>
+          </section>
+
+          <section class="panel">
+            <header class="panel-head"><div><h2>演示互动</h2><p>彩排时自动生成礼物、评论、进场与点赞</p></div><span class="tag" id="demo-state-tag">未运行</span></header>
+            <div class="form-grid two">
+              <label class="field"><span>演示节奏</span>
+                <select id="set-demo-scenario">
+                  <option value="normal">常态互动</option>
+                  <option value="burst">礼物爆发</option>
+                  <option value="finale">终场冲榜</option>
+                  <option value="quiet">安静陪伴</option>
+                </select>
+              </label>
+              <label class="field"><span>速度倍率</span>
+                <select id="set-demo-speed">
+                  <option value="0.5">0.5 倍</option>
+                  <option value="1">1 倍</option>
+                  <option value="2">2 倍</option>
+                  <option value="4">4 倍</option>
+                </select>
+              </label>
+            </div>
+            <div class="form-actions"><button type="button" class="btn primary" id="demo-save">保存演示设置</button></div>
+          </section>
+
+          <section class="panel">
+            <header class="panel-head"><div><h2>礼物热度权重</h2><p>只影响玩法计分，不是抖音官方抖币价格</p></div><button type="button" class="btn ghost small" id="heat-reset">恢复默认</button></header>
+            <div class="heat-grid" id="heat-grid"></div>
+            <div class="form-actions"><button type="button" class="btn primary" id="heat-save">保存礼物权重</button></div>
+          </section>
+
+
+          <section class="panel">
+            <header class="panel-head"><div><h2>运行信息</h2><p>本地服务与数据目录</p></div></header>
+            <div class="info-list" id="runtime-info"></div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <div class="toasts" id="toasts" aria-live="polite"></div>
+    <div class="modal-backdrop" id="modal" hidden>
+      <div class="modal" role="dialog" aria-modal="true">
+        <h3 id="modal-title">确认操作</h3>
+        <p id="modal-text"></p>
+        <div class="modal-actions">
+          <button type="button" class="btn ghost" id="modal-cancel">取消</button>
+          <button type="button" class="btn danger" id="modal-confirm">确认</button>
+        </div>
+      </div>
+    </div>
+    <div class="boot-screen" id="boot-screen">
+      <div class="boot-card">
+        <span class="brand-mark big" id="boot-icon" aria-hidden="true"></span>
+        <h2>正在唤醒直播工作台</h2>
+        <p id="boot-text">连接本地互动服务…</p>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="assets/workbench.mjs"></script>
+</body>
+</html>
+
+
+
